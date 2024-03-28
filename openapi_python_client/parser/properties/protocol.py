@@ -158,7 +158,7 @@ class PropertyProtocol(Protocol):
 
     def to_docstring(self) -> str:
         """Returns property docstring"""
-        doc = f"{self.python_name} ({self.get_type_string()}): {self.description or ''}"
+        doc = f"{self.python_name}: {self.description or ''}"
         if self.default:
             doc += f" Default: {self.default}."
         if self.example:

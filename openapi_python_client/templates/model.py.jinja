@@ -54,9 +54,8 @@ T = TypeVar("T", bound="{{ class_name }}")
 
     {% endif %}
     {% if model.required_properties or model.optional_properties %}
-    Attributes:
     {% for property in model.required_properties + model.optional_properties %}
-        {{ property.to_docstring() | wordwrap(112) | indent(12) }}
+    :ivar {{ property.to_docstring() | wordwrap(112) }}
     {% endfor %}{% endif %}
 {% endmacro %}
 
