@@ -20,8 +20,12 @@ for {{ inner_source }} in (_{{ property.python_name }} or []):
 {% macro _transform(property, source, destination, multipart, transform_method) %}
 {% set inner_property = property.inner_property %}
 {% if multipart %}
-{% set multipart_destination = destination %}
-{% set destination = "_temp_" + destination %}
+    {% set is_not_file = False %}
+    {% if inner_property.get_base_type_string() != "File" %}
+        {% set is_not_file = True %}
+        {% set multipart_destination = destination %}
+        {% set destination = "_temp_" + destination %}
+    {% endif %}
 {% endif %}
 {% import "property_templates/" + inner_property.template as inner_template %}
 {% if inner_template.transform %}
@@ -34,7 +38,9 @@ for {{ inner_source }} in {{ source }}:
 {{ destination }} = {{ source }}
 {% endif %}
 {% if multipart %}
+    {% if is_not_file %}
 {{ multipart_destination }} = (None, json.dumps({{ destination }}).encode(), 'application/json')
+    {% endif %}
 {% endif %}
 {% endmacro %}
 

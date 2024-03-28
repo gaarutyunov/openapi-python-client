@@ -9,6 +9,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 {% if model.is_multipart_body %}
 import json
+from ..types import FileJsonType, File
 {% endif %}
 
 from ..types import UNSET, Unset
