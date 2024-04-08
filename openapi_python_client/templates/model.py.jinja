@@ -7,8 +7,8 @@ from typing import List
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-{% if model.is_multipart_body %}
 import json
+{% if model.is_multipart_body %}
 from typing import Tuple
 from ..types import FileJsonType, File
 {% endif %}
@@ -90,12 +90,8 @@ files_list: List[Tuple[str, FileJsonType]] = []
 {% else %}
 {{ property.python_name }} = self.{{ property.python_name }}
 {% endif %}
-{% if multipart and model.is_multipart_body and property.get_base_type_string() == "File" %}
-{% if prop_template.append %}
-{{ prop_template.append(property, property.python_name, "files_list") }}
-{% else %}
+{% if multipart and model.is_multipart_body and property.get_instance_type_string() == "File" %}
 files_list.append(("{{ property.name }}", {{ property.python_name }}))
-{% endif %}
 {% endif %}
 {% endfor %}
 
@@ -116,7 +112,7 @@ field_dict.update(self.additional_properties)
 {% if model.required_properties | length > 0 or model.optional_properties | length > 0 %}
 field_dict.update({
     {% for property in model.required_properties + model.optional_properties %}
-    {% if property.required and not (multipart and property.get_base_type_string() == "File") %}
+    {% if property.required and not (multipart and (property.get_instance_type_string() == "File" or (property.inner_property and property.inner_property.get_instance_type_string() == "File"))) %}
     "{{ property.name }}": {{ property.python_name }},
     {% endif %}
     {% endfor %}
