@@ -24,11 +24,8 @@ class PostParametersHeaderResponse200:
 
     def to_dict(self) -> Dict[str, Any]:
         boolean = self.boolean
-
         string = self.string
-
         number = self.number
-
         integer = self.integer
 
         field_dict: Dict[str, Any] = {}

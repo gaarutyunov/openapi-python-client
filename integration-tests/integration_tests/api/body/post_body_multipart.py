@@ -22,7 +22,7 @@ def _get_kwargs(
         "url": "/body/multipart",
     }
 
-    _body = body.to_multipart()
+    _kwargs["data"], _body = body.to_multipart()
 
     _kwargs["files"] = _body
 

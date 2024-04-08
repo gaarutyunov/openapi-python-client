@@ -1,10 +1,10 @@
 from io import BytesIO
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Tuple, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, File, Unset
+from ..types import UNSET, File, FileJsonType, Unset
 
 T = TypeVar("T", bound="PostBodyMultipartBody")
 
@@ -26,7 +26,6 @@ class PostBodyMultipartBody:
 
     def to_dict(self) -> Dict[str, Any]:
         a_string = self.a_string
-
         file = self.file.to_tuple()
 
         description = self.description
@@ -44,33 +43,25 @@ class PostBodyMultipartBody:
 
         return field_dict
 
-    def to_multipart(self) -> Dict[str, Any]:
-        a_string = (
-            self.a_string if isinstance(self.a_string, Unset) else (None, str(self.a_string).encode(), "text/plain")
-        )
-
+    def to_multipart(self) -> Tuple[Dict[str, Any], List[Tuple[str, FileJsonType]]]:
+        files_list: List[Tuple[str, FileJsonType]] = []
+        a_string = self.a_string
         file = self.file.to_tuple()
 
-        description = (
-            self.description
-            if isinstance(self.description, Unset)
-            else (None, str(self.description).encode(), "text/plain")
-        )
+        files_list.append(("file", file))
+        description = self.description
 
         field_dict: Dict[str, Any] = {}
-        field_dict.update(
-            {key: (None, str(value).encode(), "text/plain") for key, value in self.additional_properties.items()}
-        )
+        field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "a_string": a_string,
-                "file": file,
             }
         )
         if description is not UNSET:
             field_dict["description"] = description
 
-        return field_dict
+        return field_dict, files_list
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:

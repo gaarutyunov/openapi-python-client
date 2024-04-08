@@ -22,7 +22,6 @@ class Problem:
 
     def to_dict(self) -> Dict[str, Any]:
         parameter_name = self.parameter_name
-
         description = self.description
 
         field_dict: Dict[str, Any] = {}

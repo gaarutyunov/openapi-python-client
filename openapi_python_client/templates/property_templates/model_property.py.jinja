@@ -33,5 +33,5 @@ if not isinstance({{ source }}, Unset):
 {% endmacro %}
 
 {% macro transform_multipart(property, source, destination) %}
-{{ transform(property, source, destination, transform_method="to_multipart") }}
+{{ transform(property, source, '_kwargs["data"], '+destination, transform_method="to_multipart") }}
 {% endmacro %}

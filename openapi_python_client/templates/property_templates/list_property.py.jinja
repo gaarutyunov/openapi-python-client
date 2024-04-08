@@ -67,3 +67,7 @@ if not isinstance({{ source }}, Unset):
 {% macro transform_multipart(property, source, destination) %}
 {{ transform(property, source, destination, transform_method="to_multipart") }}
 {% endmacro %}
+
+{% macro append(property, source, destination) %}
+{{ destination }}.extend([("{{ property.name }}", item) for item in {{ source }}])
+{% endmacro %}

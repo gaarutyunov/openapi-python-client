@@ -163,14 +163,22 @@ body=body,
 {% endif %}
 {% set all_parameters = endpoint.list_all_parameters() %}
 {% if all_parameters %}
+Args:
     {% for parameter in all_parameters %}
-:param {{ parameter.to_docstring() | wordwrap(90) }}
+    {{ parameter.to_docstring() | wordwrap(90) | indent(8) }}
     {% endfor %}
 
 {% endif %}
-:raises errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
-:raises httpx.TimeoutException: If the request takes longer than Client.timeout.
+Raises:
+    errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+    httpx.TimeoutException: If the request takes longer than Client.timeout.
 
+Returns:
+{% if is_detailed %}
+    Response[{{ return_string }}]
+{% else %}
+    {{ return_string }}
+{% endif %}
 {% endmacro %}
 
 {% macro docstring(endpoint, return_string, is_detailed) %}

@@ -43,7 +43,7 @@ def _get_kwargs(
         _kwargs["data"] = _data_body
         headers["Content-Type"] = "application/x-www-form-urlencoded"
     if isinstance(body, PostBodiesMultipleFilesBody):
-        _files_body = body.to_multipart()
+        _kwargs["data"], _files_body = body.to_multipart()
 
         _kwargs["files"] = _files_body
         headers["Content-Type"] = "multipart/form-data"

@@ -21,7 +21,7 @@ def _get_kwargs(
         "url": "/tests/upload",
     }
 
-    _body = body.to_multipart()
+    _kwargs["data"], _body = body.to_multipart()
 
     _kwargs["files"] = _body
 
